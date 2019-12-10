@@ -144,20 +144,21 @@
                                         </div>
                                     </div>
                                     <div class="product_buttons">
-                                        <div class="text-right d-flex flex-row align-items-start justify-content-start">
-                                            <div class="product_button product_fav text-center d-flex flex-column align-items-center justify-content-center">
-                                                <div><div><img src="{% static 'images/heart_2.svg' %}" class="svg" alt=""><div>+</div></div></div>
-                                            </div>
-                                            <div class="product_button product_cart text-center d-flex flex-column align-items-center justify-content-center">
-                                                <div><div><img src="{% static 'images/cart.svg' %}" class="svg" alt=""><div>+</div></div></div>
-                                            </div>
-                                        </div>
+										<div class="text-right d-flex flex-row align-items-start justify-content-start">
+											<div class="product_button product_fav text-center d-flex flex-column align-items-center justify-content-center">
+												<div><div><img src="{% static 'images/heart.svg' %}" alt=""><div>+</div></div></div>
+											</div>
+											<div class="product_button product_cart text-center d-flex flex-column align-items-center justify-content-center">
+                                                <div><a href="{{ product.get_absolute_url }}"><div><img src="{% static 'images/cart.svg' %}" alt=""><div>+</div></div></a></div>
+    										</div>
+										</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                     {% endfor %}
+
 
 				</div>
 

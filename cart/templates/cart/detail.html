@@ -24,7 +24,7 @@
 					<div class="home_title">Корзиночка</div>
 					<div class="breadcrumbs d-flex flex-column align-items-center justify-content-center">
 						<ul class="d-flex flex-row align-items-start justify-content-start text-center">
-							<li><a href="#">На главную</a></li>
+							<li><a href="http://127.0.0.1:5000/">На главную</a></li>
 							<li>Вещички</li>
 						</ul>
 					</div>
@@ -34,56 +34,6 @@
 
 		<!-- Cart -->
 
-<table class="cart">
-<thead>
-<tr>
-<th>Image</th>
-<th>Product</th>
-<th>Quantity</th>
-<th>Remove</th>
-<th>Unit price</th>
-<th>Price</th>
-</tr>
-</thead>
-<tbody>
-{% for item in cart %}
-{% with product=item.product %}
-<tr>
-<td>
-<a href="{{ product.get_absolute_url }}">
-<img src="{% if product.image %}{{ product.image.url }}
-{% else %}{% static "img/no_image.png" %}{% endif %}">
-</a>
-</td>
-<td>{{ product.name }}</td>
-<td>
-<form action="{% url "cart:cart_add" product.id %}" method="post">
-{{ item.update_quantity_form.quantity }}
-{{ item.update_quantity_form.update }}
-<input type="submit" value="Update">
-{% csrf_token %}
-</form>
-</td>
-<td><a href="{% url "cart:cart_remove" product.id%}">Remove</a></td>
-<td class="num">${{ item.price }}</td>
-<td class="num">${{ item.total_price }}</td>
-</tr>
-{% endwith %}
-{% endfor %}
-<tr class="total">
-<td>Total</td>
-<td colspan="4"></td>
-<td class="num">${{ cart.get_total_price }}</td>
-</tr>
-</tbody>
-</table>
-<p class="text-right">
-<a href="{% url "shop:product_list" %}" class="button light">Continue shopping</a>
-<a href="#" class="button">Checkout</a>
-</p>
-{% for product_id in cart %}
-    <li>{{ product.name }}</li>
-{% endfor %}
 
 		<div class="cart_section">
 			<div class="container">
@@ -95,56 +45,59 @@
 							<!-- Cart Bar -->
 							<div class="cart_bar">
 								<ul class="cart_bar_list item_list d-flex flex-row align-items-center justify-content-end">
-									<li class="mr-auto">Product</li>
-									<li>Color</li>
-									<li>Size</li>
-									<li>Price</li>
-									<li>Quantity</li>
-									<li>Total</li>
+									<li class="mr-auto">Товарчик</li>
+									<li>Цвет</li>
+									<li>Размер</li>
+									<li>Цена</li>
+									<li>Кол-во</li>
+									<li>Итого:</li>
 								</ul>
 							</div>
 
 							<!-- Cart Items -->
 
-							<div class="cart_items">
-								<ul class="cart_items_list">
+
 
 									<!-- Cart Item -->
-                                 {% for item in cart %}
-                                   {% with product=item.product %}
-                                        <li class="cart_item item_list d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-lg-end justify-content-start">
-                                            <div class="product d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start mr-auto">
-                                                <div><div class="product_number">1</div></div>
-                                                <div><div class="product_image"><img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" alt=""></div></div>
-                                                <div class="product_name_container">
-                                                    <div class="product_name"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></div>
-                                                    <div class="product_text">{{ product.description }}</div>
-                                                </div>
-                                            </div>
-                                            <div class="product_color product_text"><span>Цвет: </span>beige</div>
-                                            <div class="product_size product_text"><span>Размер: </span>L</div>
-                                            <div class="product_price product_text">{{ product.price }}</div>
-                                            <div class="product_quantity_container">
-                                                <div class="product_quantity ml-lg-auto mr-lg-auto text-center">
-                                                    <span class="product_text product_num">1</span>
-                                                    <div class="qty_sub qty_button trans_200 text-center"><span>-</span></div>
-                                                    <div class="qty_add qty_button trans_200 text-center"><span>+</span></div>
-                                                </div>
-                                            </div>
-                                            <div class="product_total product_text">Итого: {{ cart.get_total_price }}</div>
-                                        </li>
-                                     {% endwith %}
-                                 {% endfor %}
+                                {% for item in cart %}
+                                    {% with product=item.product %}
+                                    <div class="cart_items">
+                                        <ul class="cart_items_list"></ul>
+
+                                                <li class="cart_item item_list d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-lg-end justify-content-start">
+                                                    <div class="product d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start mr-auto">
+                                                        <div><div class="product_number">{{ product.id }}</div></div>
+                                                        <div><div class="product_image"><img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" alt=""></div></div>
+                                                        <div class="product_name_container">
+                                                            <div class="product_name"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></div>
+                                                            <div class="product_text">{{ product.description }}</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product_color product_text"><span>Цвет: </span>beige</div>
+                                                    <div class="product_size product_text"><span>Размер: </span>L</div>
+                                                    <div class="product_price product_text">{{ item.price }}</div>
+                                                    <div class="product_quantity_container">
+                                                        <div class="product_quantity ml-lg-auto mr-lg-auto text-center">
+                                                            <span class="product_text product_num">{{ item.quantity }}</span>
+                                                            <div class="qty_sub qty_button trans_200 text-center"><span>-</span></div>
+                                                            <div class="qty_add qty_button trans_200 text-center"><span>+</span></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product_total product_text">{{ item.total_price }}</div>
+                                                </li>
+
+                                     </div>
 
 
 							<!-- Cart Buttons -->
-							<div class="cart_buttons d-flex flex-row align-items-start justify-content-start">
-								<div class="cart_buttons_inner ml-sm-auto d-flex flex-row align-items-start justify-content-start flex-wrap">
-									<div class="button button_clear trans_200"><a href="categories.html">clear cart</a></div>
-									<div class="button button_continue trans_200"><a href="{% url "shop:product_list" %}">continue shopping</a></div>
-
-								</div>
-							</div>
+							        <div class="cart_buttons d-flex flex-row align-items-start justify-content-start">
+                                        <div class="cart_buttons_inner ml-sm-auto d-flex flex-row align-items-start justify-content-start flex-wrap">
+                                            <div class="button button_clear trans_200"><a href="{% url "cart:cart_remove" product.id%}">Очистить корзинку</a></div>
+                                            <div class="button button_continue trans_200"><a href="{% url "shop:product_list" %}">Поискать еще</a></div>
+                                        </div>
+							        </div>
+                                    {% endwith %}
+                                {% endfor %}
 						</div>
 					</div>
 				</div>
@@ -153,40 +106,40 @@
 					<div class="col-lg-6">
 						<div class="cart_extra cart_extra_1">
 							<div class="cart_extra_content cart_extra_coupon">
-								<div class="cart_extra_title">Coupon code</div>
+								<div class="cart_extra_title">Купончик</div>
 								<div class="coupon_form_container">
 									<form action="#" id="coupon_form" class="coupon_form">
 										<input type="text" class="coupon_input" required="required">
-										<button class="coupon_button">apply</button>
+										<button class="coupon_button">ОК</button>
 									</form>
 								</div>
-								<div class="coupon_text">Phasellus sit amet nunc eros. Sed nec congue tellus. Aenean nulla nisl, volutpat blandit lorem ut.</div>
+								<div class="coupon_text">Совершайте больше покупок и получайте скидочные купоны</div>
 								<div class="shipping">
-									<div class="cart_extra_title">Shipping Method</div>
+									<div class="cart_extra_title">Способ доставки</div>
 									<ul>
 										<li class="shipping_option d-flex flex-row align-items-center justify-content-start">
 											<label class="radio_container">
 												<input type="radio" id="radio_1" name="shipping_radio" class="shipping_radio">
 												<span class="radio_mark"></span>
-												<span class="radio_text">Next day delivery</span>
+												<span class="radio_text">Самовывоз</span>
 											</label>
-											<div class="shipping_price ml-auto">$4.99</div>
+											<div class="shipping_price ml-auto">бесплатно</div>
 										</li>
 										<li class="shipping_option d-flex flex-row align-items-center justify-content-start">
 											<label class="radio_container">
 												<input type="radio" id="radio_2" name="shipping_radio" class="shipping_radio">
 												<span class="radio_mark"></span>
-												<span class="radio_text">Standard delivery</span>
+												<span class="radio_text">Доставка курьером</span>
 											</label>
-											<div class="shipping_price ml-auto">$1.99</div>
+											<div class="shipping_price ml-auto">200</div>
 										</li>
 										<li class="shipping_option d-flex flex-row align-items-center justify-content-start">
 											<label class="radio_container">
 												<input type="radio" id="radio_3" name="shipping_radio" class="shipping_radio" checked>
 												<span class="radio_mark"></span>
-												<span class="radio_text">Personal Pickup</span>
+												<span class="radio_text">Персональные условия</span>
 											</label>
-											<div class="shipping_price ml-auto">Free</div>
+											<div class="shipping_price ml-auto"></div>
 										</li>
 									</ul>
 								</div>
@@ -196,19 +149,19 @@
 					<div class="col-lg-6 cart_extra_col">
 						<div class="cart_extra cart_extra_2">
 							<div class="cart_extra_content cart_extra_total">
-								<div class="cart_extra_title">Cart Total</div>
+								<div class="cart_extra_title">Общий чек</div>
 								<ul class="cart_extra_total_list">
 									<li class="d-flex flex-row align-items-center justify-content-start">
-										<div class="cart_extra_total_title">Subtotal</div>
-										<div class="cart_extra_total_value ml-auto">$29.90</div>
+										<div class="cart_extra_total_title">Сумма заказа</div>
+										<div class="cart_extra_total_value ml-auto">{{ cart.get_total_price }}</div>
 									</li>
 									<li class="d-flex flex-row align-items-center justify-content-start">
-										<div class="cart_extra_total_title">Shipping</div>
-										<div class="cart_extra_total_value ml-auto">Free</div>
+										<div class="cart_extra_total_title">Доставка</div>
+										<div class="cart_extra_total_value ml-auto">Бесплатно</div>
 									</li>
 									<li class="d-flex flex-row align-items-center justify-content-start">
-										<div class="cart_extra_total_title">Total</div>
-										<div class="cart_extra_total_value ml-auto">$29.90</div>
+										<div class="cart_extra_total_title">Итого</div>
+										<div class="cart_extra_total_value ml-auto">{{ cart.get_total_price }}</div>
 									</li>
 								</ul>
 								<div class="checkout_button trans_200"><a href="checkout.html">proceed to checkout</a></div>
@@ -218,6 +171,56 @@
 				</div>
 			</div>
 		</div>
+</div>
+    <h1>Your shopping cart</h1>
+  <table class="cart">
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Remove</th>
+        <th>Unit price</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cart %}
+        {% with product=item.product %}
+          <tr>
+            <td>
+              <a href="{{ product.get_absolute_url }}">
+                <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+              </a>
+            </td>
+            <td>{{ product.name }}</td>
+            <td>
+              <form action="{% url "cart:cart_add" product.id %}" method="post">
+                {{ item.update_quantity_form.quantity }}
+                {{ item.update_quantity_form.update }}
+                <input type="submit" value="Update">
+                {% csrf_token %}
+              </form>
+            </td>
+            <td><a href="{% url "cart:cart_remove" product.id %}">Remove</a></td>
+            <td class="num">${{ item.price }}</td>
+            <td class="num">${{ item.total_price }}</td>
+          </tr>
+        {% endwith %}
+      {% endfor %}
+      <tr class="total">
+        <td>Total</td>
+        <td colspan="4"></td>
+        <td class="num">${{ cart.get_total_price }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="text-right">
+    <a href="{% url "shop:product_list" %}" class="button light">Continue shopping</a>
+<a href="{#% url "orders:order_create" %#}" class="button">
+      Checkout
+    </a>
+  </p>
 {% block foot %}
     <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
     <script src="{% static 'styles/bootstrap-4.1.2/popper.js' %}"></script>
